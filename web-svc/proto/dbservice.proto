@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "../pb";
+
+message GetUserRequest {
+    string id = 1;
+}
+
+message GetUserByUsernameRequest {
+    string username = 1;
+}
+
+message UserResponse {
+    string id = 1;
+    string username = 2;
+    string password = 3;
+    string name = 4;
+}
+
+message UsersResponse {
+    repeated UserResponse users = 1;
+}
+
+message DepositRequest {
+    string id = 1;
+    string token = 2;
+    float amount = 3;
+    string timestamp = 4;
+}
+
+message WithdrawRequest {
+    string id = 1;
+    string token = 2;
+    float amount = 3;
+    string timestamp = 4;
+}
+
+message OperationRespons {
+    float balance = 1;
+    int32 error = 2;
+}
+
+message GetTokenRequest {
+    string token = 1;
+}
+
+message GetTokenByUserIdRequest {
+    string userId = 1;
+}
+
+message GetTokenResponse {
+    string token = 1;
+}
+
+message SaveTokenRequest {
+    string userId = 1;
+    string token = 2;
+}
+
+message GetBalanceRequest {
+    string token = 1;
+}
+
+message GetBalanceResponse {
+ float balance = 1;
+}
+
+service Database {
+    rpc GetUserByUsername(GetUserByUsernameRequest) returns (UserResponse) {}
+    rpc GetAllUsers(google.protobuf.Empty) returns (UsersResponse) {}
+    rpc GetUserByID(GetUserRequest) returns (UserResponse) {}
+    rpc Deposit(DepositRequest) returns (OperationRespons) {}
+    rpc Withdraw(WithdrawRequest) returns (OperationRespons) {}
+    rpc GetTokenByUserId(GetTokenByUserIdRequest) returns (GetTokenResponse) {}
+    rpc SaveToken(SaveTokenRequest) returns (google.protobuf.Empty) {}
+    rpc GetToken(GetTokenRequest) returns (GetTokenResponse) {}
+    rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse) {}
+  }

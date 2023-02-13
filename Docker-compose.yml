@@ -1,0 +1,74 @@
+version: "3.5"
+
+networks:
+  docker-maxProject:
+    driver: bridge
+
+services:
+  web-svc:
+    image: dockerized-web-svc:latest
+    build:
+      context: ./web-svc
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - docker-maxProject
+
+  idempotency-svc:
+    image: dockerized-idempotency-svc:latest
+    depends_on:
+      - "redis_image"
+    build:
+      context: ./idempotency-svc
+      dockerfile: Dockerfile
+    ports:
+      - "7000:7000"
+    networks:
+      - docker-maxProject
+
+  db-svc:
+    image: dockerized-db-svc:latest
+    depends_on:
+      - "postgres_image"
+    build:
+      context: ./db-svc
+      dockerfile: Dockerfile
+    ports:
+      - 9000:9000
+    environment:
+      DB_CONNECTION_STRING: "host=postgres_image;port=5432;database=maxDB;username=postgres;password=maximilian"
+    networks:
+      - docker-maxProject
+  
+  postgres_image:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - maxDbSvc_volume:/var/lib/posrgresql/data
+      - ./db-svc/sql/init.sql:/docker-entrypoint-initdb.d/migration.sql
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "maximilian"
+      POSTGRES_DB: "maxDB"
+    networks:
+      - docker-maxProject
+    
+  redis_image:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server
+    volumes: 
+      - cache:/data
+    networks:
+      - docker-maxProject
+
+volumes:
+  maxDbSvc_volume:
+    driver: local
+  cache:
+    driver: local
