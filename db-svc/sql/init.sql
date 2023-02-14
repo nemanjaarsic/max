@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "Financies"(
 CREATE TABLE IF NOT EXISTS "Transactions"(
     "Id" uuid PRIMARY KEY NOT NULL,
     "UserId" uuid NOT NULL,
-    "OperationType" text NOT NULL,
+    "OperationType" int NOT NULL,
     "Amount" double precision NOT NULL,
     "Timestamp" timestamp NOT NULL DEFAULT NOW(),
     CONSTRAINT "UserId" FOREIGN KEY ("UserId")
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS "Auth"(
     "UserId" uuid NOT NULL,
     "Token" text UNIQUE NOT NULL,
     "Active" bool NOT NULL,
-    "Creatd_at" timestamp NOT NULL DEFAULT NOW()
+    "Created_at" timestamp NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO "Users" ("Id", "Username", "Password", "Name")

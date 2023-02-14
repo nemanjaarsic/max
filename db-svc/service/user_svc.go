@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"log"
 	"max-db-svc/model"
 	"max-db-svc/repo"
 )
@@ -28,6 +27,5 @@ func (s *UserService) GetByUsername(ctx context.Context, username string) (model
 }
 
 func (s *UserService) GetUserByToken(ctx context.Context, token string) (model.User, error) {
-	log.Print(ctx.Err())
 	return s.UserRepo.GetUserByToken(ctx, token)
 }

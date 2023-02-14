@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"fmt"
-	"log"
 	"max-db-svc/model"
 	"max-db-svc/repo"
 )
@@ -21,9 +20,7 @@ func (s *TransactionService) Init(repo *repo.Repositories) {
 }
 
 func (s *TransactionService) Insert(ctx context.Context, tx model.Transaction) error {
-	log.Print(ctx.Err())
 	if tx.OperationType == model.Withdraw {
-		log.Print(ctx.Err())
 		b, err := s.FinanceRepo.GetBalanceByUserID(ctx, tx.UserID)
 		if err.Err != nil {
 			return err.Err
@@ -31,6 +28,5 @@ func (s *TransactionService) Insert(ctx context.Context, tx model.Transaction) e
 			return fmt.Errorf("[TransactionService Insert] Withdraw amount is larger than current balance")
 		}
 	}
-	log.Print(ctx.Err())
 	return s.TransactionRepo.Insert(ctx, tx)
 }

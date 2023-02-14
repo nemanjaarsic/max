@@ -45,7 +45,7 @@ func (r *userRepo) GetByUsername(ctx context.Context, username string) (model.Us
 	}
 
 	var u model.User
-	rows.Scan(&u.ID, &u.Username, &u.Name, &u.Password)
+	rows.Scan(&u.ID, &u.Username, &u.Password, &u.Name)
 	return u, nil
 }
 
@@ -70,7 +70,7 @@ func (r *userRepo) GetUserByID(ctx context.Context, ID string) (model.User, erro
 		return model.User{}, fmt.Errorf("[UserRepo GetUserByID] Invalid user id")
 	}
 	var u model.User
-	rows.Scan(&u.ID, &u.Username, &u.Name, &u.Password)
+	rows.Scan(&u.ID, &u.Username, &u.Password, &u.Name)
 	return u, nil
 }
 
@@ -85,7 +85,7 @@ func (r *userRepo) GetAllUsers(ctx context.Context) ([]model.User, error) {
 	var users []model.User
 	for rows.Next() {
 		var u model.User
-		if err := rows.Scan(&u.ID, &u.Username, &u.Name, &u.Password); err != nil {
+		if err := rows.Scan(&u.ID, &u.Username, &u.Password, &u.Name); err != nil {
 			return users, fmt.Errorf("[UserRepo GetAllUsers]  %v", err)
 		}
 		users = append(users, u)
@@ -132,6 +132,6 @@ func (r *userRepo) GetUserByToken(ctx context.Context, token string) (model.User
 		return model.User{}, fmt.Errorf("[UserRepo GetUserByToken] Invalid user id")
 	}
 	var u model.User
-	rows.Scan(&u.ID, &u.Username, &u.Name, &u.Password)
+	rows.Scan(&u.ID, &u.Username, &u.Password, &u.Name)
 	return u, nil
 }

@@ -55,7 +55,7 @@ func handleIncomingRequests(router *mux.Router) {
 		done <- http.ListenAndServe(fmt.Sprint(":", "8000"), router)
 	}()
 	http.Handle("/", router)
-	log.Printf("--- SERVICE STARTED ---")
+	log.Printf("--- SERVICE WEB STARTED ---")
 	if err := <-done; err != nil {
 		log.Printf("Failed to serve. Error message: %s", err)
 		os.Exit(1)

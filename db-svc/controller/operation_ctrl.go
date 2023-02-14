@@ -2,7 +2,6 @@ package controller
 
 import (
 	"context"
-	"log"
 	"max-db-svc/model"
 	"max-db-svc/pb"
 
@@ -12,14 +11,12 @@ import (
 
 func (c *DatabaseController) Deposit(ctx context.Context, in *pb.DepositRequest) (*pb.OperationRespons, error) {
 	user, err := c.UserService.GetUserByToken(ctx, in.GetToken())
-	log.Print(ctx.Err())
 	if err != nil {
 		return &pb.OperationRespons{}, status.Errorf(
 			codes.Internal,
 			err.Error(),
 		)
 	}
-	log.Print(ctx.Err())
 	err = c.TransactionService.Insert(ctx, model.Transaction{
 		ID:            in.GetId(),
 		UserID:        user.ID,
@@ -27,7 +24,6 @@ func (c *DatabaseController) Deposit(ctx context.Context, in *pb.DepositRequest)
 		Amount:        in.GetAmount(),
 		Timestamp:     in.GetTimestamp(),
 	})
-	log.Print(ctx.Err())
 	if err != nil {
 		return &pb.OperationRespons{}, status.Errorf(
 			codes.Internal,
@@ -35,9 +31,7 @@ func (c *DatabaseController) Deposit(ctx context.Context, in *pb.DepositRequest)
 		)
 	}
 
-	log.Print(ctx.Err())
 	balance, err := c.FinanceService.Deposit(ctx, user.ID, in.GetAmount())
-	log.Printf("last strop: %s", ctx.Err())
 
 	return &pb.OperationRespons{
 		Balance: balance,

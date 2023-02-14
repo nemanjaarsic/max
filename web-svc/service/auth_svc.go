@@ -25,7 +25,6 @@ func (s *AuthService) Login(ctx context.Context, l model.Login) (string, error) 
 	if err != nil {
 		return "", err
 	}
-
 	if !checkPasswordHash(u.Password, l.Password) {
 		return "", fmt.Errorf("[AuthService Login] Invalid password")
 	}

@@ -36,7 +36,6 @@ func (c *DatabaseController) GetUserByID(ctx context.Context, in *pb.GetUserRequ
 
 func (c *DatabaseController) GetUserByUsername(ctx context.Context, in *pb.GetUserByUsernameRequest) (*pb.UserResponse, error) {
 	user, err := c.UserService.GetByUsername(ctx, in.GetUsername())
-
 	return &pb.UserResponse{
 		Id:       user.ID,
 		Username: user.Username,

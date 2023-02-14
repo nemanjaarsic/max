@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"fmt"
-	"log"
 	"max-db-svc/model"
 	"max-db-svc/repo"
 	"net/http"
@@ -18,7 +17,6 @@ func (s *FinanceService) Init(repos *repo.Repositories) {
 }
 
 func (s *FinanceService) Deposit(ctx context.Context, userID string, amount float32) (float32, error) {
-	log.Print(ctx.Err())
 	b, err := s.FinanceRepo.GetBalanceByUserID(ctx, userID)
 	if err.Code != http.StatusMethodNotAllowed && err.Err != nil {
 		return -1, err.Err
@@ -35,7 +33,6 @@ func (s *FinanceService) Deposit(ctx context.Context, userID string, amount floa
 	if err := s.FinanceRepo.Update(ctx, model.Finance{UserID: userID, Balance: newBalance}); err != nil {
 		return b, err
 	}
-	log.Print(ctx.Err())
 	return newBalance, nil
 }
 
