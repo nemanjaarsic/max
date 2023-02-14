@@ -14,7 +14,7 @@ type idempotencySvc struct {
 
 func NewIdempotencySvc() *idempotencySvc {
 	opts := &redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "redis_db :6379",
 		Password: "",
 		DB:       0,
 	}
@@ -47,5 +47,5 @@ func (s *idempotencySvc) Validate(ctx context.Context, t model.Transaction) (str
 		return "", fmt.Errorf("[Rdis Validate] Transaction duplicate")
 	}
 
-	return val, nil
+	return fmt.Sprint("Result:", val), nil
 }

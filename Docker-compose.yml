@@ -6,7 +6,8 @@ networks:
 
 services:
   web-svc:
-    image: dockerized-web-svc:latest
+    container_name: web-svc
+    image: web-svc-img:latest
     build:
       context: ./web-svc
       dockerfile: Dockerfile
@@ -16,7 +17,8 @@ services:
       - docker-maxProject
 
   idempotency-svc:
-    image: dockerized-idempotency-svc:latest
+    container_name: idempotency-svc
+    image: idempotency-svc-img:latest
     depends_on:
       - "redis_image"
     build:
@@ -28,7 +30,8 @@ services:
       - docker-maxProject
 
   db-svc:
-    image: dockerized-db-svc:latest
+    container_name: db-svc
+    image: db-svc-img:latest
     depends_on:
       - "postgres_image"
     build:
@@ -42,6 +45,7 @@ services:
       - docker-maxProject
   
   postgres_image:
+    container_name: postgres_db
     image: postgres:latest
     ports:
       - "5432:5432"
@@ -57,18 +61,19 @@ services:
       - docker-maxProject
     
   redis_image:
+    container_name: redis_db
     image: redis:7-alpine
     restart: always
     ports:
       - "6379:6379"
     command: redis-server
     volumes: 
-      - cache:/data
+      - cache_volume:/data
     networks:
       - docker-maxProject
 
 volumes:
   maxDbSvc_volume:
     driver: local
-  cache:
+  cache_volume:
     driver: local
