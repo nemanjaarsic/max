@@ -14,7 +14,7 @@ type idempotencySvc struct {
 
 func NewIdempotencySvc() *idempotencySvc {
 	opts := &redis.Options{
-		Addr:     "redis_db :6379",
+		Addr:     "redis_db:6379",
 		Password: "",
 		DB:       0,
 	}
