@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"max-web-svc/config"
 	"max-web-svc/pb"
 
 	"google.golang.org/grpc"
@@ -13,7 +14,7 @@ type Client struct {
 }
 
 func NewGRPCDatabaseClient() (pb.DatabaseClient, error) {
-	conn, err := grpc.Dial("db-svc:9000", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(config.Conf.DatabaseService.Host, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
@@ -23,7 +24,7 @@ func NewGRPCDatabaseClient() (pb.DatabaseClient, error) {
 }
 
 func NewGRPCIdempotencyClient() (pb.IdempotencyClient, error) {
-	conn, err := grpc.Dial("idempotency-svc:7000", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(config.Conf.IdempotencyService.Host, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}

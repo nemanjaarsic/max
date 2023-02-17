@@ -1,0 +1,6 @@
+{
+    "host": "localhost:9000",
+    "postgres": {
+        "connectionString": "postgres://postgres:maximilian@localhost:5432/max?sslmode=disable"
+    }
+}

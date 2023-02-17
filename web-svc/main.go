@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"max-web-svc/config"
 	"max-web-svc/controller"
 	"max-web-svc/repo"
 	"max-web-svc/routes"
@@ -24,7 +25,7 @@ func main() {
 	flag.Parse()
 
 	router := mux.NewRouter()
-	router.Host("https://localhost")
+	router.Host(config.Conf.Host)
 
 	initRepos()
 	initServices()
@@ -52,12 +53,21 @@ func setupRoutes(apiSubrouter *mux.Router) {
 func handleIncomingRequests(router *mux.Router) {
 	done := make(chan error, 1)
 	go func() {
-		done <- http.ListenAndServe(fmt.Sprint(":", "8000"), router)
+		done <- http.ListenAndServe(fmt.Sprint(":", config.Conf.API_port), router)
 	}()
 	http.Handle("/", router)
-	log.Printf("--- SERVICE WEB STARTED ---")
+	log.Printf("--- WEB SERVICE STARTED ---")
 	if err := <-done; err != nil {
 		log.Printf("Failed to serve. Error message: %s", err)
 		os.Exit(1)
 	}
+}
+
+func init() {
+	//load default configuration
+	if err := config.LoadConfJson(); err != nil {
+		log.Fatalf("Failed loading service config. Error message: %s", err)
+	}
+	// load environment variables
+	config.LoadEnv()
 }

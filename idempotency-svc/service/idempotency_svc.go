@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"max-idempotency-svc/config"
 	"max-idempotency-svc/model"
 
 	"github.com/go-redis/redis/v8"
@@ -14,8 +15,8 @@ type idempotencySvc struct {
 
 func NewIdempotencySvc() *idempotencySvc {
 	opts := &redis.Options{
-		Addr:     "redis_db:6379",
-		Password: "",
+		Addr:     config.Conf.Redis.Host,
+		Password: config.Conf.Redis.Password,
 		DB:       0,
 	}
 	client := redis.NewClient(opts)

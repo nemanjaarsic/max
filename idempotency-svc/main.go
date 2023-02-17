@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"max-idempotency-svc/config"
 	"max-idempotency-svc/controller"
 	"max-idempotency-svc/pb"
 	"max-idempotency-svc/service"
@@ -16,7 +17,7 @@ var (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", "0.0.0.0:7000")
+	lis, err := net.Listen("tcp", config.Conf.Host)
 	log.Print(lis.Addr())
 	if err != nil {
 		log.Fatalf("Failed to listen on port 7000: %v", err)
@@ -34,4 +35,13 @@ func main() {
 
 func initServices() {
 	svcs.InitServices()
+}
+
+func init() {
+	//load default configuration
+	if err := config.LoadConfJson(); err != nil {
+		log.Fatalf("Failed loading service config. Error message: %s", err)
+	}
+	// load environment variables
+	config.LoadEnv()
 }

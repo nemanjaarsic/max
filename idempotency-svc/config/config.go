@@ -10,26 +10,20 @@ var Conf Config
 
 // Config [Root config structure]
 type Config struct {
-	API_port           string
-	Host               string
-	DatabaseService    DatabaseSvcConfig
-	IdempotencyService IdempotencySvcConfig
+	Host  string
+	Redis RedisConfig
 }
 
-type DatabaseSvcConfig struct {
-	Host string
-}
-
-type IdempotencySvcConfig struct {
-	Host string
+type RedisConfig struct {
+	Host     string
+	Password string
 }
 
 // Override default values with env
 func LoadEnv() {
-	Conf.API_port = getEnv("API_PORT", Conf.API_port)
 	Conf.Host = getEnv("HOST", Conf.Host)
-	Conf.DatabaseService.Host = getEnv("DATABASE_SERVICE_HOST", Conf.DatabaseService.Host)
-	Conf.IdempotencyService.Host = getEnv("IDEMPOTENCY_SERVICE_HOST", Conf.IdempotencyService.Host)
+	Conf.Redis.Host = getEnv("REDIS_HOST", Conf.Redis.Host)
+	Conf.Redis.Password = getEnv("REDIS_PASSWORD", Conf.Redis.Password)
 }
 
 func getEnv(key string, defaultVal string) string {

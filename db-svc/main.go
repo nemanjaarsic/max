@@ -4,12 +4,12 @@ import (
 	"log"
 	"net"
 
+	"max-db-svc/config"
 	"max-db-svc/controller"
 	pb "max-db-svc/pb"
 	"max-db-svc/repo"
 	"max-db-svc/service"
 
-	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -20,8 +20,7 @@ var (
 )
 
 func main() {
-
-	lis, err := net.Listen("tcp", "0.0.0.0:9000")
+	lis, err := net.Listen("tcp", config.Conf.Host)
 	log.Print(lis.Addr())
 	if err != nil {
 		log.Fatalf("Failed to listen on port 9000: %v", err)
@@ -44,4 +43,13 @@ func initRepos() {
 
 func initServices() {
 	svcs.Init(&repos)
+}
+
+func init() {
+	//load default configuration
+	if err := config.LoadConfJson(); err != nil {
+		log.Fatalf("Failed loading service config. Error message: %s", err)
+	}
+	// load environment variables
+	config.LoadEnv()
 }
