@@ -31,6 +31,6 @@ On db initialization 5 users are created, there data is in same format as the ex
 
 ## version 2
 
-Adding new features on branch v2
+Adding improvements on branch v2
 
 * Added configuration loader. There is default configuration in config file for local run and if app is started via docker, variables will be loaded from dockerfile.
